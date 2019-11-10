@@ -27,7 +27,7 @@ List<String> lista_katalogow_Jar() {
 ArrayList<String> listaKatalogow = new ArrayList<>();
 
 try {
-    JarFile jarFile = new JarFile("ProgramyJava1.jar");
+    JarFile jarFile = new JarFile("ProgramyJava3.jar");
     Enumeration<JarEntry> enumOfJar = jarFile.entries();
 
     while(enumOfJar.hasMoreElements()) {
@@ -41,7 +41,7 @@ return listaKatalogow;
 }
 
 String odczyt(String katalog) throws IOException {
-JarFile jarFile = new JarFile("ProgramyJava1.jar");
+JarFile jarFile = new JarFile("ProgramyJava3.jar");
 JarEntry entry = jarFile.getJarEntry(katalog);
 InputStream input = jarFile.getInputStream(entry);
 StringBuilder linie = new StringBuilder();
