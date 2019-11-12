@@ -87,16 +87,12 @@ public class ProgramyJava1
     JButton programGenerator = new JButton("GeneratorSQlite");
     programGenerator.addActionListener((e) -> {
         this.usun_komponenty();
-        ProgramGeneratorZapytanSQlite programGeneratorZapytanSQlite = null;
-        try {
-            programGeneratorZapytanSQlite = new ProgramGeneratorZapytanSQlite();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        this.f.add(Objects.requireNonNull(programGeneratorZapytanSQlite).generatorSQlite_panel_north(), "North");
+        ProgramGeneratorZapytanSQlite_versja2 programGeneratorZapytanSQlite;
+        programGeneratorZapytanSQlite = new ProgramGeneratorZapytanSQlite_versja2();
+        this.f.add(Objects.requireNonNull(programGeneratorZapytanSQlite).generatorSQlite_panel_north2(), "North");
 
         try {
-            this.f.add(programGeneratorZapytanSQlite.generatorSQlite_panel_center(), "Center");
+            this.f.add(programGeneratorZapytanSQlite.generatorSQlite_panel_center2(), "Center");
         } catch (IOException var4) {
             var4.printStackTrace();
         }

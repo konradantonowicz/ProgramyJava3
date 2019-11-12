@@ -1,14 +1,13 @@
 package com.company;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 class ProgramGeneratorZapytanSQlite
     {
     private JTextField kolumnaRowid;
@@ -26,13 +25,15 @@ class ProgramGeneratorZapytanSQlite
     private String Str_numerKsiegi;
     private ArrayList<String> listaZapytanie01 = new ArrayList<>();
     private ArrayList<String> listakolumnbazydanych = new ArrayList<>();
-
+    private JComboBox comboNazwaKsiegi;
     private List<String> listaZapytanie02 = new ArrayList<>();
     private String[] przyciski = new String[]{"Moj_1_Mojzeszowa", "Moj_2_Mojzeszowa", "Moj_3_Mojzeszowa", "Moj_4_Mojzeszowa", "Moj_5_Mojzeszowa", "Ksiega_Jozuego", "Ksiega_Sedziow", "Ksiega_Rut", "Ksiega_I_Samuel", "Ksiega_II_Samuel", "I_Ksiega_Krolewska", "II_Ksiega_Krolewska", "I_Ksiega_Kronik", "II Księga Kronik", "Ksiega_Ezdrasza", "Ksiega_Nehemiasza", "Ksiega_Estery", "Ksiega_Hioba", "Psalmy", "Ksiega_Przyslow", "Ksiega_Kaznodziei", "Piesn_Nad_Piesniami", "Ksiega_Izajasza", "Ksiega_Jeremiasza", "Lamentacje", "Ksiega_Ezechiela", "Ksiega_Daniela", "Ksiega_Ozeasza", "Ksiega_Joela", "Ksiega_Amosa", "Ksiega_Abdiasza", "Ksiega_Jonasza", "Ksiega_Micheasza", "Ksiega_Nahuma", "Ksiega_Habakuka", "Ksiega_Sofoniasza", "Ksiega_Aggeusza", "Ksiega_Zachariasza", "Ksiega_Malachiasza", "Ewangelia_Mateusza", "Ewangelia_Marka", "Ewangelia_Lukasza", "Ewangelia_Jana", "Dzieje_Apostolskie", "List_Do_Rzymian", "I_List_Do_Koryntian", "II_List_Do_Koryntian", "List_Do_Galacjan", "List_Do_Efezjan", "List_Do_Filipian", "List_Do_Kolosan", "I_List_Do_Tesaloniczan", "II_List_Do_Tesaloniczan", "I_List_Do_Tymoteusza", "II_List_Do_Tymoteusza", "List_Do_Tytusa", "List_Do_Filemona", "List_Do_Hebrajczykow", "List_Jakuba", "I_List_Piotra", "II_List_Piotra", "I_List_Jana", "II_List_Jana", "III_List_Jana", "List_Judy", "Ksiega_Objawienia"};
 
     ProgramGeneratorZapytanSQlite() throws SQLException
         {
             listakolumnbazydanych.addAll(BazaDanych.polacz(przyciski[0]));
+
+
         }
 
     private JButton buttonprzyciskiKsiag(String Nazwa)
@@ -70,30 +71,38 @@ class ProgramGeneratorZapytanSQlite
             this.obszarTekstowy3.selectAll();
             this.obszarTekstowy3.copy();
             dodajzapisz.transferFocusBackward();
-            String[] ko = new String[]{Str_nazwaKsiegi, this.kolumnaRozdzialy.getText(), this.kolumnaRowid.getText(), this.kolumnaTemat.getText(), this.obszarTekstowy1.getText(), this.obszarTekstowy2.getText()};
-            StringBuilder str;
-
-            str = new StringBuilder(ko[4]);
-            this.czyscDanezPliku(0, 2400);
+            String[] ko = new String[]{Str_nazwaKsiegi,obszarTekstowy1.getText(),obszarTekstowy2.getText()};
+            StringBuilder str = new StringBuilder(ko[0]);
+            this.czyscDanezPliku(0, 50);
             try {
                 this.writeToPosition(str.toString(), 0);
             } catch (IOException var7) {
                 var7.printStackTrace();
             }
-            str = new StringBuilder(ko[5]);
+            str = new StringBuilder(ko[1]);
+            this.czyscDanezPliku(50, 2400);
+            try {
+                this.writeToPosition(str.toString(), 50);
+            } catch (IOException var6) {
+                var6.printStackTrace();
+            }
+
+            str = new StringBuilder(ko[2]);
             this.czyscDanezPliku(2400, 4400);
             try {
                 this.writeToPosition(str.toString(), 2400);
             } catch (IOException var6) {
                 var6.printStackTrace();
             }
+
         });
         return dodajzapisz;
         }
 
     private JLabel etykieta(String nazwa)
         {
-        return new JLabel(nazwa);
+
+            return new JLabel(nazwa);
         }
 
 
@@ -102,12 +111,13 @@ class ProgramGeneratorZapytanSQlite
             {
 
             DefaultComboBoxModel<String> modelBoxNazwaKsiegi = new DefaultComboBoxModel<>(przyciski);
-         JComboBox comboNazwaKsiegi = new JComboBox<>(modelBoxNazwaKsiegi);
+         comboNazwaKsiegi = new JComboBox<>(modelBoxNazwaKsiegi);
+
          comboNazwaKsiegi.addActionListener(e -> {
              JComboBox wybor = (JComboBox) e.getSource();
             Str_nazwaKsiegi = (String) wybor.getSelectedItem();
 
-           wyswietl();
+
              listakolumnbazydanych.clear();
              try {
                  listakolumnbazydanych.addAll(BazaDanych.polacz(Str_nazwaKsiegi));
@@ -117,6 +127,8 @@ class ProgramGeneratorZapytanSQlite
              kolumnaTemat.setText(listakolumnbazydanych.get(0));
              kolumnaRozdzialy.setText(listakolumnbazydanych.get(1));
              kolumnaRowid.setText(listakolumnbazydanych.get(2));
+
+             wyswietl();
          });
 
 
@@ -129,6 +141,7 @@ class ProgramGeneratorZapytanSQlite
         {
         this.kolumnaRowid = new JTextField();
         this.kolumnaRowid.setText(listakolumnbazydanych.get(2));
+
         return this.kolumnaRowid;
         }
 
@@ -143,14 +156,7 @@ class ProgramGeneratorZapytanSQlite
         {
         this.kolumnaTemat = new JTextField();
         this.kolumnaTemat.setText(listakolumnbazydanych.get(0));
-        this.kolumnaTemat.addKeyListener(new KeyAdapter()
-            {
-            public void keyReleased(KeyEvent e)
-                {
-                super.keyReleased(e);
 
-                }
-            });
         return this.kolumnaTemat;
         }
 
@@ -162,23 +168,24 @@ class ProgramGeneratorZapytanSQlite
 
     private JScrollPane textArea1() throws IOException
         {
-        this.obszarTekstowy1 = new JTextArea();
-        this.obszarTekstowy1.setText(this.readFromPosition(0));
-        return new JScrollPane(this.obszarTekstowy1);
+        obszarTekstowy1 = new JTextArea();
+        obszarTekstowy1.setText(readFromPosition(50));
+
+        return new JScrollPane(obszarTekstowy1);
         }
 
     private JScrollPane textArea2() throws IOException
         {
 
         this.obszarTekstowy2 = new JTextArea();
-        this.obszarTekstowy2.setText(this.readFromPosition(2400));
+        this.obszarTekstowy2.setText(readFromPosition(2400));
         this.Str_kolumnaRowid = this.kolumnaRowid.getText();
         this.Str_kolumnaTemat = this.kolumnaTemat.getText() + "\n";
-        Str_nazwaKsiegi = "Objects.requireNonNull(comboBoxNazwaKsiegi().getSelectedItem()).toString()";
-        this.Str_numerKsiegi = this.ZamienNazweKsiegiNaNumerKsiegi(this.Str_nazwaKsiegi);
+        Str_nazwaKsiegi = Objects.requireNonNull(comboBoxNazwaKsiegi().getSelectedItem()).toString();
+        this.Str_numerKsiegi = this.ZamienNazweKsiegiNaNumerKsiegi(Str_nazwaKsiegi);
         this.Str_kolumnaRozdzialy = this.kolumnaRozdzialy.getText() + ",\n";
         this.ksiegadoDodania.getText();
-        return new JScrollPane(this.obszarTekstowy2);
+        return new JScrollPane(obszarTekstowy2);
         }
 
     private JScrollPane textArea3()
@@ -206,28 +213,30 @@ class ProgramGeneratorZapytanSQlite
 
     private void wyswietl()
         {
-        this.listaZapytanie01.clear();
-        this.listaZapytanie02.clear();
-        this.obszarTekstowy1.setText(" ");
-        this.obszarTekstowy2.setText(" ");
-        this.Str_kolumnaRowid = this.kolumnaRowid.getText();
-        this.Str_kolumnaTemat = this.kolumnaTemat.getText() + "\n ";
-        this.Str_numerKsiegi = this.ZamienNazweKsiegiNaNumerKsiegi(this.Str_nazwaKsiegi);
-        this.Str_kolumnaRozdzialy = this.kolumnaRozdzialy.getText() + ",\n";
-        this.ksiegadoDodania.getText();
+        listaZapytanie01.clear();
+       listaZapytanie02.clear();
+
+       //obszarTekstowy1.setText(" ");
+      //obszarTekstowy2.setText(" ");
+
+        Str_kolumnaRowid = this.kolumnaRowid.getText();
+        Str_kolumnaTemat = this.kolumnaTemat.getText() + "\n ";
+       Str_numerKsiegi = this.ZamienNazweKsiegiNaNumerKsiegi(Str_nazwaKsiegi);
+      Str_kolumnaRozdzialy = this.kolumnaRozdzialy.getText() + ",\n";
+       ksiegadoDodania.getText();
         String str_select = "SELECT ";
-        this.listaZapytanie01.add(str_select);
-        this.listaZapytanie01.add(this.Str_nazwaKsiegi + "_Komentarze." + this.Str_kolumnaRozdzialy);
+        listaZapytanie01.add(str_select);
+       listaZapytanie01.add(this.Str_nazwaKsiegi + "_Komentarze." + Str_kolumnaRozdzialy);
         String str_Verse = "\tBible.Verse,\n";
-        this.listaZapytanie01.add(str_Verse);
+        listaZapytanie01.add(str_Verse);
         String str_scripture = "\tBible.Scripture,\n";
-        this.listaZapytanie01.add(str_scripture);
-        this.listaZapytanie01.add(this.Str_nazwaKsiegi + "_Komentarze." + this.Str_kolumnaTemat);
+        listaZapytanie01.add(str_scripture);
+      listaZapytanie01.add(this.Str_nazwaKsiegi + "_Komentarze." + Str_kolumnaTemat);
         String str_As = " AS ";
-        this.listaZapytanie02.add(str_As + this.Str_kolumnaTemat);
+        listaZapytanie02.add(str_As + this.Str_kolumnaTemat);
         String str_From = "\tFROM Bible\n\t\tINNER JOIN\n";
         String str_Bible = "= Bible._rowid_";
-        this.listaZapytanie02.add(str_From + this.Str_nazwaKsiegi + "_Komentarze ON " + this.Str_kolumnaRowid + str_Bible);
+     listaZapytanie02.add(str_From + this.Str_nazwaKsiegi + "_Komentarze ON " + Str_kolumnaRowid + str_Bible);
         Iterator<String> var1 = this.listaZapytanie01.iterator();
         String b;
         while (var1.hasNext()) {
@@ -242,6 +251,7 @@ class ProgramGeneratorZapytanSQlite
         JTextArea var10000 = this.obszarTekstowy3;
         String var10001 = this.obszarTekstowy1.getText();
         var10000.setText(var10001 + this.obszarTekstowy2.getText());
+
         }
 
     private String ZamienNazweKsiegiNaNumerKsiegi(String NazwaKsiegi)
@@ -729,6 +739,7 @@ class ProgramGeneratorZapytanSQlite
 
     JPanel generatorSQlite_panel_north()
         {
+
         JPanel panel_1 = new JPanel();
         panel_1.setLayout(new GridLayout(13, 5));
         for (int x = 0; x < 66; ++x) {
@@ -820,6 +831,8 @@ class ProgramGeneratorZapytanSQlite
         c.weightx = 0.0D;
         c.gridwidth = 1;
         panel_2.add(this.buttonPokazCalosc(), c);
+        comboNazwaKsiegi.setSelectedItem(readFromPosition(0));
+
         return panel_2;
         }
     }

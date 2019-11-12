@@ -24,7 +24,7 @@ class BazaDanych
         assert polaczenie != null;
         stat = polaczenie.createStatement();
 
-        String szukajSQL = "SELECT * FROM "+nazwaKsiegi+"_Komentarze";
+        String szukajSQL = "SELECT * FROM "+nazwaKsiegi;
 
         ResultSet wynik = stat.executeQuery(szukajSQL);
         ResultSetMetaData rsmd = wynik.getMetaData();
