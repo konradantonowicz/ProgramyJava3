@@ -1,9 +1,7 @@
 package com.company;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.Objects;
 
 public class ProgramyJava1
     {
@@ -90,13 +88,7 @@ public class ProgramyJava1
         ProgramGeneratorZapytanSQlite_versja2 programGeneratorZapytanSQlite;
         programGeneratorZapytanSQlite = new ProgramGeneratorZapytanSQlite_versja2();
         this.f.add(Objects.requireNonNull(programGeneratorZapytanSQlite).generatorSQlite_panel_north2(), "North");
-
-        try {
-            this.f.add(programGeneratorZapytanSQlite.generatorSQlite_panel_center2(), "Center");
-        } catch (IOException var4) {
-            var4.printStackTrace();
-        }
-
+        this.f.add(programGeneratorZapytanSQlite.generatorSQlite_panel_center2(), "Center");
         this.f.add(this.Panel_South(), "South");
         this.f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.f.setVisible(true);
