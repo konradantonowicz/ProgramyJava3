@@ -28,8 +28,8 @@ class ProgramGeneratorZapytanSQlite_versja2
     private String str_select = "SELECT ";
     private String str_nazwaKsiegibezko;
     private String str_nazwaKsiegi;
-    private JLabel kolroz, koltem, dodajKsiege;
-
+    private JLabel kolroz;
+    private JLabel koltem;
 
     private JButton buttonprzyciskiKsiag(String Nazwa)
         {
@@ -87,8 +87,7 @@ class ProgramGeneratorZapytanSQlite_versja2
 
     private JLabel etykietaKolumnaDodajKsiege()
         {
-        dodajKsiege = new JLabel("Dodaj Ksiegę");
-        return dodajKsiege;
+        return new JLabel("Dodaj Ksiegę");
         }
 
     private JComboBox comboBoxNazwaKsiegi()
@@ -211,7 +210,6 @@ class ProgramGeneratorZapytanSQlite_versja2
         c.weightx = 0.0D;
         c.gridwidth = 1;
         panel_2.add(this.buttonPokazCalosc(), c);
-
         return panel_2;
 
         }
