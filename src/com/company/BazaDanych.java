@@ -44,7 +44,7 @@ class BazaDanych
                         Spliterator.ORDERED), false).limit(3).collect(
                 Collectors.toList());
 
-        System.out.println(listReversedOrder);
+       // System.out.println(listReversedOrder);
 
 
         wynik.close();
