@@ -46,16 +46,13 @@ class ProgramGeneratorZapytanSQlite_versja2
         });
         return ksiegi;
         }
-
     private JButton buttonPokazCalosc()
         {
         JButton pokazCalosc = new JButton("Pokaż Całość");
         pokazCalosc.addActionListener((e) -> {
-
         });
         return pokazCalosc;
         }
-
     private JButton buttonZaznaczKopiuj()
         {
         JButton dodajzapisz = new JButton("Zaznacz/Kopiuj/Zapisz");
@@ -66,36 +63,30 @@ class ProgramGeneratorZapytanSQlite_versja2
         });
         return dodajzapisz;
         }
-
     private JLabel etykietaKolumnaRowid()
         {
         kolrowid = new JLabel("Rowid");
         return kolrowid;
         }
-
     private JLabel etykietaKolumnaRozdzialy()
         {
         kolroz = new JLabel("Rozdzialy");
         return kolroz;
         }
-
     private JLabel etykietaKolumnaTemat()
         {
         koltem = new JLabel("Temat");
         return koltem;
         }
-
     private JLabel etykietaKolumnaDodajKsiege()
         {
         return new JLabel("Dodaj Ksiegę");
         }
-
     private JComboBox comboBoxNazwaKsiegi()
         {
         DefaultComboBoxModel<String> modelBoxNazwaKsiegi = new DefaultComboBoxModel<>(przyciski);
         comboNazwaKsiegi = new JComboBox<>(modelBoxNazwaKsiegi);
         comboNazwaKsiegi.addActionListener(e -> {
-
             listaObszar1.clear();
             listakolumnbazydanych.clear();
             JComboBox wybor = (JComboBox) e.getSource();
@@ -115,31 +106,26 @@ class ProgramGeneratorZapytanSQlite_versja2
             obszarTekstowy2.setText(listaObszar2.get(0));
             obszarTekstowy3.setText(listaObszar1.get(0) + "\n" + listaObszar2.get(0));
             String[] ko = new String[]{str_nazwaKsiegibezko, obszarTekstowy1.getText(), obszarTekstowy2.getText()};
-
             watek_zapis(ko);
         });
         return comboNazwaKsiegi;
         }
-
     private JScrollPane textArea1()
         {
         obszarTekstowy1 = new JTextArea();
         return new JScrollPane(obszarTekstowy1);
         }
-
     private JScrollPane textArea2()
         {
         obszarTekstowy2 = new JTextArea();
         return new JScrollPane(obszarTekstowy2);
         }
-
     private JScrollPane textArea3()
         {
         this.obszarTekstowy3 = new JTextArea();
         watek_odczyt();
         return new JScrollPane(this.obszarTekstowy3);
         }
-
     JPanel generatorSQlite_panel_north2()
         {
         JPanel panel_1 = new JPanel();
@@ -147,10 +133,8 @@ class ProgramGeneratorZapytanSQlite_versja2
         for (int x = 0; x < 66; ++x) {
             panel_1.add(this.buttonprzyciskiKsiag(this.przyciski[x]));
         }
-
         return panel_1;
         }
-
     JPanel generatorSQlite_panel_center2()
         {
         JPanel panel_2 = new JPanel();
@@ -211,9 +195,7 @@ class ProgramGeneratorZapytanSQlite_versja2
         c.gridwidth = 1;
         panel_2.add(this.buttonPokazCalosc(), c);
         return panel_2;
-
         }
-
     private String zamienNazweKsieginaNumer(String NazwaKsiegi)
         {
         switch (NazwaKsiegi) {
@@ -352,12 +334,16 @@ class ProgramGeneratorZapytanSQlite_versja2
         }
         return "0";
         }
-
     private void watek_zapis(String[] str)
         {
         class runnableZapisPliku implements Runnable
             {
             private String[] str;
+
+            private runnableZapisPliku(String[] s)
+                {
+                str = s;
+                }
 
             private void czyscDanezPliku(int start, int koniec)
                 {
@@ -378,15 +364,9 @@ class ProgramGeneratorZapytanSQlite_versja2
                 writer.close();
                 }
 
-            private runnableZapisPliku(String[] s)
-                {
-                str = s;
-                }
-
             @Override
             public void run()
                 {
-
                 czyscDanezPliku(0, 50);
                 try {
                     this.writeToPosition(str[0], 0);
@@ -410,7 +390,6 @@ class ProgramGeneratorZapytanSQlite_versja2
         Thread t = new Thread(new runnableZapisPliku(str));
         t.start();
         }
-
     private void watek_odczyt()
         {
         class runnableOdczytPliku implements Runnable
@@ -423,10 +402,8 @@ class ProgramGeneratorZapytanSQlite_versja2
                     reader = new RandomAccessFile("kolumny.dat", "r");
                     reader.seek(0);
                     String result1 = reader.readUTF();
-
                     comboNazwaKsiegi.setSelectedItem(result1);
                     System.out.println(result1);
-
                     reader.seek(50);
                     String result2 = reader.readUTF();
                     obszarTekstowy1.setText(result2);
@@ -434,7 +411,6 @@ class ProgramGeneratorZapytanSQlite_versja2
                     String result3 = reader.readUTF();
                     obszarTekstowy2.setText(result3);
                     reader.close();
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
