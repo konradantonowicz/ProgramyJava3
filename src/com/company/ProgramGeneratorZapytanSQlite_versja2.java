@@ -373,15 +373,15 @@ class ProgramGeneratorZapytanSQlite_versja2
                 } catch (IOException var7) {
                     var7.printStackTrace();
                 }
-                czyscDanezPliku(50, 1050);
+                czyscDanezPliku(50, 10000);
                 try {
                     this.writeToPosition(str[1], 50);
                 } catch (IOException var7) {
                     var7.printStackTrace();
                 }
-                czyscDanezPliku(1050, 2050);
+                czyscDanezPliku(10000, 20000);
                 try {
-                    this.writeToPosition(str[2], 1050);
+                    this.writeToPosition(str[2], 10000);
                 } catch (IOException var7) {
                     var7.printStackTrace();
                 }
@@ -407,7 +407,7 @@ class ProgramGeneratorZapytanSQlite_versja2
                     reader.seek(50);
                     String result2 = reader.readUTF();
                     obszarTekstowy1.setText(result2);
-                    reader.seek(1050);
+                    reader.seek(10000);
                     String result3 = reader.readUTF();
                     obszarTekstowy2.setText(result3);
                     reader.close();
