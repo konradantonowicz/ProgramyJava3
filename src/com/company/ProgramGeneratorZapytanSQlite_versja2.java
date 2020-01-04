@@ -1,8 +1,7 @@
 package com.company;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -136,15 +135,7 @@ class ProgramGeneratorZapytanSQlite_versja2
         private JButton fileChooser()
         {
             JButton btnfilechooser = new JButton("wybierz plik ...");
-            btnfilechooser.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-
-
-fileChoose();
-
-                }
-            });
+            btnfilechooser.addActionListener(actionEvent -> fileChoose());
             return btnfilechooser;
         }
 private void fileChoose()
@@ -409,6 +400,7 @@ private void fileChoose()
             public void run()
                 {
                 czyscDanezPliku(0, 50);
+
                 try {
                     this.writeToPosition(str[0], 0);
                 } catch (IOException var7) {
