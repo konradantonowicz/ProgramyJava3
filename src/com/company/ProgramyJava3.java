@@ -2,18 +2,18 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
-public class ProgramyJava1
+public class ProgramyJava3
     {
     private JFrame f;
 
-    private ProgramyJava1()
+    private ProgramyJava3()
         {
         this.OknoGlowne();
         }
 
     public static void main(String[] args)
         {
-        new ProgramyJava1();
+        new ProgramyJava3();
         }
 
     private void OknoGlowne()

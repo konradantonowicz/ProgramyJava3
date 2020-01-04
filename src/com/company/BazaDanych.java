@@ -8,14 +8,14 @@ class BazaDanych
 
 
 
-    static List<String> polacz(String nazwaKsiegi) throws SQLException
+    static List<String> polacz(String nazwaKsiegi,String sciezka) throws SQLException
         {
         Connection polaczenie = null;
         Statement stat;
         try {
 
             Class.forName("org.sqlite.JDBC");
-            polaczenie = DriverManager.getConnection("jdbc:sqlite:/home/pueblo/AndroidStudioProjects/Biblia5.9/app/src/main/assets/pubg.db");
+            polaczenie = DriverManager.getConnection(sciezka);
             System.out.println("Połączyłem się z bazą ");
         } catch (Exception e) {
             System.err.println("Błąd w połączeniu z bazą: \n" + e.getMessage());

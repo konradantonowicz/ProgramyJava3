@@ -1,6 +1,9 @@
 package com.company;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.sql.SQLException;
@@ -30,6 +33,9 @@ class ProgramGeneratorZapytanSQlite_versja2
     private String str_nazwaKsiegi;
     private JLabel kolroz;
     private JLabel koltem;
+    private String sciezkaBazydanych;
+
+
 
     private JButton buttonprzyciskiKsiag(String Nazwa)
         {
@@ -50,6 +56,7 @@ class ProgramGeneratorZapytanSQlite_versja2
         {
         JButton pokazCalosc = new JButton("Pokaż Całość");
         pokazCalosc.addActionListener((e) -> {
+            obszarTekstowy3.setText(obszarTekstowy1.getText() + "\n" + obszarTekstowy2.getText());
         });
         return pokazCalosc;
         }
@@ -60,6 +67,8 @@ class ProgramGeneratorZapytanSQlite_versja2
             obszarTekstowy3.selectAll();
             obszarTekstowy3.copy();
             dodajzapisz.transferFocusBackward();
+            String[] ko = new String[]{str_nazwaKsiegibezko, obszarTekstowy1.getText(), obszarTekstowy2.getText()};
+            watek_zapis(ko);
         });
         return dodajzapisz;
         }
@@ -78,10 +87,7 @@ class ProgramGeneratorZapytanSQlite_versja2
         koltem = new JLabel("Temat");
         return koltem;
         }
-    private JLabel etykietaKolumnaDodajKsiege()
-        {
-        return new JLabel("Dodaj Ksiegę");
-        }
+
     private JComboBox comboBoxNazwaKsiegi()
         {
         DefaultComboBoxModel<String> modelBoxNazwaKsiegi = new DefaultComboBoxModel<>(przyciski);
@@ -93,7 +99,7 @@ class ProgramGeneratorZapytanSQlite_versja2
             str_nazwaKsiegibezko = Objects.requireNonNull(wybor.getSelectedItem()).toString();
             str_nazwaKsiegi = str_nazwaKsiegibezko + "_Komentarze";
             try {
-                listakolumnbazydanych.addAll(BazaDanych.polacz(str_nazwaKsiegi));
+                listakolumnbazydanych.addAll(BazaDanych.polacz(str_nazwaKsiegi,sciezkaBazydanych));
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -105,8 +111,8 @@ class ProgramGeneratorZapytanSQlite_versja2
             obszarTekstowy1.setText(listaObszar1.get(0));
             obszarTekstowy2.setText(listaObszar2.get(0));
             obszarTekstowy3.setText(listaObszar1.get(0) + "\n" + listaObszar2.get(0));
-            String[] ko = new String[]{str_nazwaKsiegibezko, obszarTekstowy1.getText(), obszarTekstowy2.getText()};
-            watek_zapis(ko);
+
+
         });
         return comboNazwaKsiegi;
         }
@@ -126,7 +132,42 @@ class ProgramGeneratorZapytanSQlite_versja2
         watek_odczyt();
         return new JScrollPane(this.obszarTekstowy3);
         }
-    JPanel generatorSQlite_panel_north2()
+
+        private JButton fileChooser()
+        {
+            JButton btnfilechooser = new JButton("wybierz plik ...");
+            btnfilechooser.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+
+
+fileChoose();
+
+                }
+            });
+            return btnfilechooser;
+        }
+private void fileChoose()
+{
+
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setSize(300,300);
+    fileChooser.setVisible(true);
+
+    int returnValue = fileChooser.showOpenDialog(null);
+
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        sciezkaBazydanych="jdbc:sqlite:"+selectedFile.getAbsolutePath();
+        System.out.println("ustawiono");
+    }
+
+
+
+}
+
+
+        JPanel generatorSQlite_panel_north2()
         {
         JPanel panel_1 = new JPanel();
         panel_1.setLayout(new GridLayout(13, 5));
@@ -149,19 +190,19 @@ class ProgramGeneratorZapytanSQlite_versja2
         c.fill = 2;
         c.gridx = 1;
         c.gridy = 0;
+            panel_2.add(fileChooser(), c);
+            c.fill = 1;
+            c.gridx = 2;
+            c.gridy = 0;
         panel_2.add(etykietaKolumnaRowid(), c);
-        c.fill = 2;
-        c.gridx = 2;
-        c.gridy = 0;
-        panel_2.add(etykietaKolumnaRozdzialy(), c);
-        c.fill = 2;
+        c.fill = 1;
         c.gridx = 3;
         c.gridy = 0;
-        panel_2.add(etykietaKolumnaTemat(), c);
-        c.fill = 2;
+        panel_2.add(etykietaKolumnaRozdzialy(), c);
+        c.fill = 1;
         c.gridx = 4;
         c.gridy = 0;
-        panel_2.add(etykietaKolumnaDodajKsiege(), c);
+        panel_2.add(etykietaKolumnaTemat(), c);
         c.fill = 2;
         c.insets = new Insets(0, 1, 0, 1);
         c.gridx = 0;
@@ -394,29 +435,41 @@ class ProgramGeneratorZapytanSQlite_versja2
         {
         class runnableOdczytPliku implements Runnable
             {
+            String result1;
             @Override
             public void run()
                 {
                 RandomAccessFile reader;
                 try {
                     reader = new RandomAccessFile("kolumny.dat", "r");
+
+
                     reader.seek(0);
-                    String result1 = reader.readUTF();
+                    result1 = reader.readUTF();
+
                     comboNazwaKsiegi.setSelectedItem(result1);
-                    System.out.println(result1);
+                    System.out.println("wczytano = "+result1);
+
                     reader.seek(50);
                     String result2 = reader.readUTF();
                     obszarTekstowy1.setText(result2);
                     reader.seek(10000);
                     String result3 = reader.readUTF();
                     obszarTekstowy2.setText(result3);
+
+
                     reader.close();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 }
+
             }
         Thread tt = new Thread(new runnableOdczytPliku());
         tt.start();
         }
+
+
+
     }
